@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Header } from "../../components/Header";
 import { WalletButton } from "../../components/WalletButton";
 import { Footer } from "../../components/Footer";
-import { useCurrentAccount, useSignTransaction } from "@mysten/dapp-kit";
+import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { useUSDTBalance } from "../../hooks/useUSDTBalance";
 import { Transaction } from "@mysten/sui/transactions";
 
@@ -101,8 +101,8 @@ const MOCK_MARKETS = [
 export default function MarketDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const account = useCurrentAccount();
-  const { balance, isLoading: isBalanceLoading } = useUSDTBalance();
-  const { mutate: signTransaction } = useSignTransaction();
+  const { balance, isLoading: isBalanceLoading, refetch: refetchBalance } = useUSDTBalance();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
   const [betAmount, setBetAmount] = useState('');
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no' | null>(null);
   const [isPlacingBet, setIsPlacingBet] = useState(false);
@@ -135,12 +135,12 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
     try {
       setIsPlacingBet(true);
 
-      // Create a demo transaction for testing wallet signature
+      // Create a demo transaction for testing wallet signature and execution
       // In production, this would call the smart contract's place_bet function with USDT
       const tx = new Transaction();
 
-      // Demo transaction: Transfer small amount of SUI to self
-      // This simulates the wallet signature flow
+      // Demo transaction: Transfer 0.001 SUI to self (minimal transaction for testing)
+      // This simulates the wallet signature and execution flow
       const [coin] = tx.splitCoins(tx.gas, [1_000_000]); // 0.001 SUI
       tx.transferObjects([coin], account.address);
 
@@ -155,22 +155,26 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
       //   ],
       // });
 
-      // Request wallet signature
-      signTransaction(
+      // Request wallet signature and execute transaction
+      signAndExecuteTransaction(
         {
           transaction: tx,
         },
         {
           onSuccess: (result) => {
-            console.log('Transaction signed successfully:', result);
-            alert(`✅ Bet placed successfully!\n\nAmount: ${betAmount} USDT\nOutcome: ${selectedOutcome.toUpperCase()}\n\n📝 Demo Mode: This is a test transaction.\nIn production, ${betAmount} USDT would be transferred to the smart contract.\n\nSignature: ${result.signature.substring(0, 20)}...`);
+            console.log('Transaction executed successfully:', result);
+            alert(`✅ Bet placed successfully!\n\nAmount: ${betAmount} USDT\nOutcome: ${selectedOutcome.toUpperCase()}\n\n📝 Demo Mode: Test transaction executed.\nIn production, ${betAmount} USDT would be transferred to the smart contract.\n\nDigest: ${result.digest.substring(0, 20)}...`);
+
+            // Refresh balance after transaction
+            setTimeout(() => refetchBalance(), 2000);
+
             // Reset form
             setBetAmount('');
             setSelectedOutcome(null);
           },
           onError: (error) => {
-            console.error('Transaction signing failed:', error);
-            alert(`❌ Transaction failed: ${error.message}`);
+            console.error('Transaction failed:', error);
+            alert(`❌ Transaction failed: ${error.message || 'Unknown error'}`);
           },
         }
       );
