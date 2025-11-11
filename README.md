@@ -156,6 +156,30 @@ Walmarket is the **world's first verifiable AI oracle** for prediction markets, 
 
 ---
 
+## 🧪 Test Token Information (SUI Testnet)
+
+The following test USDT tokens have been deployed and minted for testing:
+
+### Contract Addresses
+- **Package ID**: `0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d`
+- **Treasury Cap ID**: `0x014367974122be63c27c5ec3a51c0e92e7e34bbb8a48fc99c48c444505e677bf`
+- **Market Registry ID**: `0xec89a1e95991bb73e1e521540036d8ffc3eb5892a4629e616873d4586a00c4df`
+- **USDT Token Type**: `0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d::usdt::USDT`
+
+### Initial Minting
+- **Amount**: 1,000,000 USDT (1M USDT)
+- **Transaction**: `Bb6mFoKgF3k7EaGWdyN3w2pjHbtUmfvUCQ2TECjKLv3C`
+- **Deployment Transaction**: `GsWUUvApRzra1khb4PcZP7MNxwzCvgvYqB6STFyAf7y4`
+
+### Mint Additional Tokens
+```bash
+cd contracts
+export PACKAGE_ID=0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d
+./scripts/mint_usdt.sh 0x014367974122be63c27c5ec3a51c0e92e7e34bbb8a48fc99c48c444505e677bf 1000000000 $(sui client active-address)
+```
+
+---
+
 ## 🚀 Installation & Setup
 
 ### Prerequisites
