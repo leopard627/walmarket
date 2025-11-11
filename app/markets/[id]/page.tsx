@@ -250,17 +250,76 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
               </div>
             </div>
 
-            {/* Resolution Criteria */}
+            {/* AI Oracle Resolution */}
             <div className="bg-white p-8 rounded-xl shadow-sm">
-              <h2 className="text-2xl font-bold mb-4">Resolution Criteria</h2>
-              <div className="space-y-3 text-gray-700">
-                <p>{market.description}</p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-4">
-                  <div className="font-semibold text-orange-900 mb-2">Verified on Walrus</div>
-                  <p className="text-sm text-orange-800">
-                    All market outcomes are cryptographically verified and stored on Walrus,
-                    ensuring permanent, tamper-proof records.
-                  </p>
+              <h2 className="text-2xl font-bold mb-4">AI Oracle Resolution</h2>
+              <div className="space-y-4">
+                <div className="text-gray-700">
+                  <p className="mb-4">{market.description}</p>
+                  <div className="flex items-start gap-2 text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <span className="text-blue-600 text-lg">ℹ️</span>
+                    <p>
+                      This market will be resolved using our <strong>Verifiable AI Oracle</strong> powered by Nautilus TEE and GPT-5.
+                    </p>
+                  </div>
+                </div>
+
+                {/* AI Oracle Features */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <span className="text-2xl">🔒</span>
+                    <div>
+                      <div className="font-semibold text-purple-900 text-sm">Nautilus TEE</div>
+                      <p className="text-xs text-purple-700 mt-1">
+                        AI runs in secure enclaves with cryptographic attestation
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <span className="text-2xl">🤖</span>
+                    <div>
+                      <div className="font-semibold text-green-900 text-sm">GPT-5 Oracle</div>
+                      <p className="text-xs text-green-700 mt-1">
+                        Multi-source data verification with cryptographic proofs
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                    <span className="text-2xl">🌊</span>
+                    <div>
+                      <div className="font-semibold text-orange-900 text-sm">Walrus Storage</div>
+                      <p className="text-xs text-orange-700 mt-1">
+                        Permanent evidence bundles (input, output, reasoning)
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <span className="text-2xl">⛓️</span>
+                    <div>
+                      <div className="font-semibold text-blue-900 text-sm">On-Chain Verification</div>
+                      <p className="text-xs text-blue-700 mt-1">
+                        SUI smart contracts validate TEE attestations
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* How it Works Link */}
+                <div className="mt-6 p-4 bg-gradient-to-r from-orange-50 to-amber-50 border-2 border-orange-300 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="font-bold text-gray-900 mb-1">Want to learn how it works?</div>
+                      <p className="text-sm text-gray-600">
+                        See the complete AI oracle verification flow with Nautilus TEE, Walrus, and SUI
+                      </p>
+                    </div>
+                    <Link
+                      href="/how-it-works"
+                      className="ml-4 px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors whitespace-nowrap"
+                    >
+                      Learn More →
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
