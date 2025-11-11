@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="border-t-4 border-orange-400 bg-white/90 backdrop-blur-sm mt-20">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           {/* About */}
           <div>
             <h3 className="text-sm font-bold mb-4 text-orange-600">About Walmarket</h3>
@@ -87,6 +87,35 @@ export function Footer() {
                   className="text-gray-600 hover:text-orange-600 transition-colors"
                 >
                   SUI Documentation
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Explorers */}
+          <div>
+            <h3 className="text-sm font-bold mb-4 text-orange-600">Testnet Explorers</h3>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a
+                  href="https://suiscan.xyz/testnet/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-orange-600 transition-colors flex items-center gap-2"
+                >
+                  <span className="text-base">🔍</span>
+                  Suiscan
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://walruscan.com/testnet/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-orange-600 transition-colors flex items-center gap-2"
+                >
+                  <span className="text-base">🦭</span>
+                  Walruscan
                 </a>
               </li>
             </ul>
