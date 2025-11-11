@@ -135,14 +135,25 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
     try {
       setIsPlacingBet(true);
 
-      // Create a dummy transaction for testing wallet signature
+      // Create a demo transaction for testing wallet signature
+      // In production, this would call the smart contract's place_bet function with USDT
       const tx = new Transaction();
 
-      // Add a simple transfer of 0 SUI to self (dummy transaction for testing)
-      tx.transferObjects(
-        [tx.object('0x0000000000000000000000000000000000000000000000000000000000000006')],
-        account.address
-      );
+      // Demo transaction: Transfer small amount of SUI to self
+      // This simulates the wallet signature flow
+      const [coin] = tx.splitCoins(tx.gas, [1_000_000]); // 0.001 SUI
+      tx.transferObjects([coin], account.address);
+
+      // In production, this would be replaced with actual USDT bet transaction:
+      // tx.moveCall({
+      //   target: `${PACKAGE_ID}::market::place_bet`,
+      //   arguments: [
+      //     tx.object(MARKET_REGISTRY_ID),
+      //     tx.pure.string(market.id),
+      //     tx.pure.bool(selectedOutcome === 'yes'),
+      //     tx.pure.u64(parseFloat(betAmount) * 1_000_000), // USDT amount with 6 decimals
+      //   ],
+      // });
 
       // Request wallet signature
       signTransaction(
@@ -152,7 +163,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
         {
           onSuccess: (result) => {
             console.log('Transaction signed successfully:', result);
-            alert(`✅ Bet placed successfully!\n\nAmount: ${betAmount} USDT\nOutcome: ${selectedOutcome.toUpperCase()}\n\nSignature: ${result.signature.substring(0, 20)}...`);
+            alert(`✅ Bet placed successfully!\n\nAmount: ${betAmount} USDT\nOutcome: ${selectedOutcome.toUpperCase()}\n\n📝 Demo Mode: This is a test transaction.\nIn production, ${betAmount} USDT would be transferred to the smart contract.\n\nSignature: ${result.signature.substring(0, 20)}...`);
             // Reset form
             setBetAmount('');
             setSelectedOutcome(null);
