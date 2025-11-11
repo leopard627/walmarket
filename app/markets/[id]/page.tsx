@@ -6,8 +6,9 @@ import Image from "next/image";
 import { Header } from "../../components/Header";
 import { WalletButton } from "../../components/WalletButton";
 import { Footer } from "../../components/Footer";
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useCurrentAccount, useSignTransaction } from "@mysten/dapp-kit";
 import { useUSDTBalance } from "../../hooks/useUSDTBalance";
+import { Transaction } from "@mysten/sui/transactions";
 
 // Mock data - same as markets page for consistency
 const MOCK_MARKETS = [
@@ -101,8 +102,10 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
   const { id } = use(params);
   const account = useCurrentAccount();
   const { balance, isLoading: isBalanceLoading } = useUSDTBalance();
+  const { mutate: signTransaction } = useSignTransaction();
   const [betAmount, setBetAmount] = useState('');
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no' | null>(null);
+  const [isPlacingBet, setIsPlacingBet] = useState(false);
 
   const market = MOCK_MARKETS.find(m => m.id === id);
 
@@ -119,7 +122,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  const handlePlaceBet = () => {
+  const handlePlaceBet = async () => {
     if (!account) {
       alert('Please connect your wallet first');
       return;
@@ -128,8 +131,44 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
       alert('Please select an outcome and enter an amount');
       return;
     }
-    // This will be replaced with actual blockchain transaction
-    alert(`Placing ${betAmount} USDT on ${selectedOutcome.toUpperCase()}`);
+
+    try {
+      setIsPlacingBet(true);
+
+      // Create a dummy transaction for testing wallet signature
+      const tx = new Transaction();
+
+      // Add a simple transfer of 0 SUI to self (dummy transaction for testing)
+      tx.transferObjects(
+        [tx.object('0x0000000000000000000000000000000000000000000000000000000000000006')],
+        account.address
+      );
+
+      // Request wallet signature
+      signTransaction(
+        {
+          transaction: tx,
+        },
+        {
+          onSuccess: (result) => {
+            console.log('Transaction signed successfully:', result);
+            alert(`✅ Bet placed successfully!\n\nAmount: ${betAmount} USDT\nOutcome: ${selectedOutcome.toUpperCase()}\n\nSignature: ${result.signature.substring(0, 20)}...`);
+            // Reset form
+            setBetAmount('');
+            setSelectedOutcome(null);
+          },
+          onError: (error) => {
+            console.error('Transaction signing failed:', error);
+            alert(`❌ Transaction failed: ${error.message}`);
+          },
+        }
+      );
+    } catch (error) {
+      console.error('Error placing bet:', error);
+      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsPlacingBet(false);
+    }
   };
 
   return (
@@ -374,10 +413,14 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   {/* Place Bet Button */}
                   <button
                     onClick={handlePlaceBet}
-                    disabled={!selectedOutcome || !betAmount || parseFloat(betAmount) > balance || parseFloat(betAmount) <= 0}
+                    disabled={!selectedOutcome || !betAmount || parseFloat(betAmount) > balance || parseFloat(betAmount) <= 0 || isPlacingBet}
                     className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
-                    {parseFloat(betAmount) > balance ? 'Insufficient Balance' : 'Place Bet'}
+                    {isPlacingBet
+                      ? 'Signing Transaction...'
+                      : parseFloat(betAmount) > balance
+                        ? 'Insufficient Balance'
+                        : 'Place Bet'}
                   </button>
 
                   <p className="text-xs text-gray-500 text-center">
