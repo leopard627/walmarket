@@ -16,7 +16,7 @@ export function Header() {
               width={1024}
               height={256}
               priority
-              className="h-10 sm:h-16 md:h-20 w-auto cursor-pointer"
+              className="h-14 sm:h-16 md:h-20 w-auto cursor-pointer"
             />
           </Link>
           <div className="hidden xs:block px-2 sm:px-3 py-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[0.5rem] sm:text-xs font-[family-name:var(--font-press-start)] border-2 border-orange-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] whitespace-nowrap">
