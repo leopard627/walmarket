@@ -22,9 +22,6 @@ const MOCK_MARKETS = [
     participants: 1247,
     createdBy: '0x1234...5678',
     createdAt: '2025-01-15',
-    aiPrediction: 0.58,
-    aiConfidence: 0.73,
-    aiReasoning: 'Analysis based on historical Bitcoin halving cycles, current macroeconomic conditions, and institutional adoption trends. Current trajectory suggests moderate probability.',
   },
   {
     id: '2',
@@ -39,9 +36,6 @@ const MOCK_MARKETS = [
     participants: 892,
     createdBy: '0xabcd...efgh',
     createdAt: '2025-01-10',
-    aiPrediction: 0.88,
-    aiConfidence: 0.91,
-    aiReasoning: 'Strong technical progress and developer commitment indicate high probability of successful completion within the specified timeframe.',
   },
   {
     id: '3',
@@ -56,9 +50,6 @@ const MOCK_MARKETS = [
     participants: 654,
     createdBy: '0x9876...5432',
     createdAt: '2025-01-20',
-    aiPrediction: 0.62,
-    aiConfidence: 0.68,
-    aiReasoning: 'Rapid adoption of AI tools and exponential growth in LLM capabilities suggest accelerating trend toward AI-generated content proliferation.',
   },
   {
     id: '4',
@@ -73,9 +64,6 @@ const MOCK_MARKETS = [
     participants: 1532,
     createdBy: '0xdef0...1234',
     createdAt: '2025-01-05',
-    aiPrediction: 0.67,
-    aiConfidence: 0.79,
-    aiReasoning: 'Strong ecosystem growth, increasing developer activity, and strategic partnerships position SUI for significant TVL expansion in 2025.',
   },
   {
     id: '5',
@@ -90,9 +78,6 @@ const MOCK_MARKETS = [
     participants: 478,
     createdBy: '0xfed9...8765',
     createdAt: '2025-01-12',
-    aiPrediction: 0.38,
-    aiConfidence: 0.64,
-    aiReasoning: 'Political and economic barriers remain significant. While several nations show interest, actual adoption requires overcoming substantial regulatory hurdles.',
   },
   {
     id: '6',
@@ -107,9 +92,6 @@ const MOCK_MARKETS = [
     participants: 321,
     createdBy: '0x3141...5926',
     createdAt: '2025-01-18',
-    aiPrediction: 0.51,
-    aiConfidence: 0.72,
-    aiReasoning: 'Network growth trajectory and increasing adoption by dApps suggest moderate probability of reaching 1PB milestone by year end.',
   },
 ];
 
@@ -218,47 +200,6 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                     {market.noPrice.toFixed(2)} SUI per share
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* AI Oracle Analysis */}
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-8 rounded-xl shadow-sm border-4 border-purple-700">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl">🤖</span>
-                <h2 className="text-2xl font-bold text-white">AI Oracle Analysis</h2>
-              </div>
-              <div className="bg-white/10 p-4 rounded-lg mb-4 border-2 border-white/30">
-                <div className="grid grid-cols-2 gap-4 mb-3">
-                  <div>
-                    <div className="text-xs font-semibold text-white/80">AI Prediction</div>
-                    <div className="text-3xl font-bold text-white">
-                      {(market.aiPrediction * 100).toFixed(0)}% YES
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-white/80">Confidence Level</div>
-                    <div className="text-3xl font-bold text-white">
-                      {(market.aiConfidence * 100).toFixed(0)}%
-                    </div>
-                  </div>
-                </div>
-                <div className={`inline-block px-3 py-1 rounded text-xs font-bold ${
-                  market.aiConfidence > 0.8 ? 'bg-green-500 text-white' :
-                  market.aiConfidence > 0.6 ? 'bg-yellow-500 text-white' :
-                  'bg-orange-500 text-white'
-                }`}>
-                  {market.aiConfidence > 0.8 ? 'HIGH CONFIDENCE' : market.aiConfidence > 0.6 ? 'MEDIUM CONFIDENCE' : 'LOW CONFIDENCE'}
-                </div>
-              </div>
-              <div className="bg-white/10 p-4 rounded-lg border-2 border-white/30">
-                <div className="text-xs font-semibold text-white/80 mb-2">AI Reasoning</div>
-                <p className="text-sm text-white/90 leading-relaxed">
-                  {market.aiReasoning}
-                </p>
-              </div>
-              <div className="mt-4 text-xs text-white/70 italic">
-                * AI predictions are based on multi-source data analysis and historical patterns.
-                Always do your own research.
               </div>
             </div>
 
