@@ -4,6 +4,7 @@ import { use, useState } from "react";
 import Link from "next/link";
 import { Header } from "../../components/Header";
 import { WalletButton } from "../../components/WalletButton";
+import { Footer } from "../../components/Footer";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 // Mock data - same as markets page for consistency
@@ -371,12 +372,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t bg-white/80 backdrop-blur-sm mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center text-gray-600">
-          <p>Built on SUI • Powered by Walrus • Hackathon 2025</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

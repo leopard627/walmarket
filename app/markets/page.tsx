@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
 // Mock data for demonstration - will be replaced with actual blockchain data
 const MOCK_MARKETS = [
@@ -226,12 +227,7 @@ export default function MarketsPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t bg-white/80 backdrop-blur-sm mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center text-gray-600">
-          <p>Built on SUI • Powered by Walrus • Hackathon 2025</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

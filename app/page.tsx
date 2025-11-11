@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
@@ -115,12 +116,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t-4 border-orange-400 bg-white/90 backdrop-blur-sm mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center text-gray-600">
-          <p className="text-sm font-bold">Built on SUI • Powered by Walrus • Hackathon 2025</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
