@@ -399,18 +399,10 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
 
                   {/* Amount Input */}
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="flex items-center gap-1.5 text-sm font-medium text-gray-700">
-                        <span>Amount</span>
-                        <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
-                      </label>
-                      <button
-                        onClick={() => setBetAmount(balance.toString())}
-                        className="text-xs text-orange-600 hover:text-orange-700 font-medium"
-                      >
-                        MAX
-                      </button>
-                    </div>
+                    <label className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-2">
+                      <span>Amount</span>
+                      <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
+                    </label>
                     <div className="relative">
                       <input
                         type="number"
@@ -419,10 +411,51 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                         placeholder="0.00"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                       />
-                      {betAmount && parseFloat(betAmount) > balance && (
-                        <p className="text-xs text-red-600 mt-1">Insufficient balance</p>
-                      )}
                     </div>
+
+                    {/* Quick Amount Selection */}
+                    <div className="grid grid-cols-4 gap-2 mt-3">
+                      <button
+                        onClick={() => {
+                          const amount = balance * 0.1;
+                          setBetAmount(amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2).replace(/\.?0+$/, ''));
+                        }}
+                        className="px-3 py-2 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
+                      >
+                        10%
+                      </button>
+                      <button
+                        onClick={() => {
+                          const amount = balance * 0.25;
+                          setBetAmount(amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2).replace(/\.?0+$/, ''));
+                        }}
+                        className="px-3 py-2 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
+                      >
+                        25%
+                      </button>
+                      <button
+                        onClick={() => {
+                          const amount = balance * 0.5;
+                          setBetAmount(amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2).replace(/\.?0+$/, ''));
+                        }}
+                        className="px-3 py-2 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
+                      >
+                        50%
+                      </button>
+                      <button
+                        onClick={() => {
+                          const amount = balance;
+                          setBetAmount(amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2).replace(/\.?0+$/, ''));
+                        }}
+                        className="px-3 py-2 text-xs font-medium text-white bg-orange-500 border border-orange-600 rounded-lg hover:bg-orange-600 transition-colors"
+                      >
+                        MAX
+                      </button>
+                    </div>
+
+                    {betAmount && parseFloat(betAmount) > balance && (
+                      <p className="text-xs text-red-600 mt-2">Insufficient balance</p>
+                    )}
                   </div>
 
                   {/* Potential Return */}
