@@ -14,7 +14,7 @@ export function Header() {
               src="/no-bg-txt.png"
               alt="Walmarket Logo"
               width={1024}
-              height={576}
+              height={256}
               priority
               className="h-10 sm:h-16 md:h-20 w-auto cursor-pointer"
             />
