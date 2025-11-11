@@ -296,7 +296,7 @@ walmarket/
 - **Demo Video**: [https://youtu.be/dQw4w9WgXcQ](https://youtu.be/dQw4w9WgXcQ)
 - **GitHub**: [https://github.com/leopard627/walmarket](https://github.com/leopard627/walmarket)
 - **SUI Network**: [https://sui.io](https://sui.io)
-- **Walrus**: [https://walrus.site](https://walrus.site)
+- **Walrus**: [https://www.walrus.xyz](https://www.walrus.xyz)
 
 ---
 
