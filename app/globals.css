@@ -10,6 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-press-start: var(--font-press-start);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +24,30 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Pixel font for headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-press-start), monospace;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+/* Pixel font for all buttons - very aggressive */
+button,
+[role="button"],
+.wallet-button button,
+[class*="wallet"] button,
+[class*="connect"] button {
+  font-family: var(--font-press-start), monospace !important;
+  font-size: 0.75rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Force pixel font on dapp-kit components */
+[class*="dapp-kit"] *,
+[class*="ConnectButton"] *,
+div[class*="wallet"] * {
+  font-family: var(--font-press-start), monospace !important;
 }
