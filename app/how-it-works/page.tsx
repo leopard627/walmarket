@@ -13,10 +13,10 @@ export default function HowItWorksPage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            How AI Oracle Works
+            How Verifiable AI Oracle Works
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Discover how Walmarket uses AI-powered oracles to automatically verify prediction market outcomes with unprecedented accuracy and transparency.
+            Discover how Walmarket combines Nautilus TEE, GPT-5, and cryptographic proofs to automatically verify prediction market outcomes with unprecedented accuracy, security, and transparency.
           </p>
         </div>
 
@@ -25,7 +25,7 @@ export default function HowItWorksPage() {
           <h2 className="text-2xl font-bold mb-4">The Challenge</h2>
           <p className="mb-4">
             Traditional prediction markets rely on centralized resolution mechanisms, creating single points of failure and potential manipulation.
-            Walmarket solves this with a decentralized AI Oracle system that:
+            Walmarket solves this with a verifiable AI Oracle system powered by Nautilus TEE that:
           </p>
           <ul className="space-y-2">
             <li className="flex items-start gap-2">
@@ -34,11 +34,15 @@ export default function HowItWorksPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-xl">✓</span>
+              <span>Runs AI inference in Trusted Execution Environments with cryptographic attestation</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-xl">✓</span>
               <span>Stores all reasoning and proofs permanently on Walrus</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-xl">✓</span>
-              <span>Eliminates trust requirements through cryptographic verification</span>
+              <span>Eliminates trust requirements through TEE signatures and on-chain verification</span>
             </li>
           </ul>
         </div>
@@ -117,6 +121,43 @@ export default function HowItWorksPage() {
           </div>
         </div>
 
+        {/* Nautilus TEE Integration */}
+        <div className="bg-gradient-to-r from-green-500 to-teal-600 p-8 rounded-xl shadow-lg mb-12 text-white">
+          <h2 className="text-2xl font-bold mb-6">🔐 Nautilus TEE: Verifiable AI Execution</h2>
+          <p className="mb-4">
+            Walmarket leverages <strong>Nautilus Trusted Execution Environment</strong> to ensure AI oracle operations are tamper-proof and cryptographically verifiable:
+          </p>
+          <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="bg-white/10 p-4 rounded-lg border-2 border-white/30">
+              <h3 className="font-bold mb-2">🛡️ Execution Integrity</h3>
+              <p className="text-sm opacity-90">
+                AI inference runs inside secure enclaves with measurement (mrenclave) verification, preventing operator tampering
+              </p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg border-2 border-white/30">
+              <h3 className="font-bold mb-2">🔑 Cryptographic Attestation</h3>
+              <p className="text-sm opacity-90">
+                Each report is signed with enclave-bound keys and includes remote attestation proofs
+              </p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg border-2 border-white/30">
+              <h3 className="font-bold mb-2">📋 Enclave Registry</h3>
+              <p className="text-sm opacity-90">
+                On-chain whitelist of authorized enclaves with epoch-based key rotation for security
+              </p>
+            </div>
+            <div className="bg-white/10 p-4 rounded-lg border-2 border-white/30">
+              <h3 className="font-bold mb-2">⚡ Replay Protection</h3>
+              <p className="text-sm opacity-90">
+                Timestamps and nonces prevent report replay attacks, ensuring fresh data only
+              </p>
+            </div>
+          </div>
+          <p className="text-sm opacity-90 italic">
+            TEE attestation eliminates the need to trust oracle operators - cryptographic proofs guarantee execution happened as claimed.
+          </p>
+        </div>
+
         {/* Single Model Policy */}
         <div className="bg-white p-8 rounded-xl shadow-lg border-2 border-blue-200 mb-12">
           <h2 className="text-2xl font-bold mb-6 text-blue-900">🎯 Single Model Policy</h2>
@@ -155,7 +196,7 @@ export default function HowItWorksPage() {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Off-Chain TEE Reporter */}
           <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-orange-200">
-            <h3 className="text-xl font-bold mb-4 text-orange-600">Off-Chain: TEE Reporter</h3>
+            <h3 className="text-xl font-bold mb-4 text-orange-600">Off-Chain: Nautilus TEE Reporter</h3>
             <ul className="space-y-3 text-sm text-gray-700">
               <li className="flex items-start gap-2">
                 <span className="font-bold text-orange-600">1.</span>
@@ -167,11 +208,11 @@ export default function HowItWorksPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-orange-600">3.</span>
-                <span><strong>GPT-5 Inference:</strong> Generate resolution with confidence score and cited sources</span>
+                <span><strong>TEE Execution:</strong> Run GPT-5 inference inside Nautilus enclave with execution integrity proof</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-orange-600">4.</span>
-                <span><strong>Evidence Bundle:</strong> Package input, output, prompts, and version hashes</span>
+                <span><strong>Hash Computation:</strong> Calculate SHA256 of input, output, and evidence bundle</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-orange-600">5.</span>
@@ -179,7 +220,7 @@ export default function HowItWorksPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-orange-600">6.</span>
-                <span><strong>TEE Signature:</strong> Sign report with trusted execution environment attestation</span>
+                <span><strong>TEE Attestation:</strong> Sign report digest with enclave key and generate remote attestation</span>
               </li>
             </ul>
           </div>
@@ -190,27 +231,27 @@ export default function HowItWorksPage() {
             <ul className="space-y-3 text-sm text-gray-700">
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">1.</span>
-                <span><strong>Verification:</strong> Validate TEE attestation and blob_hash against Walrus anchor</span>
+                <span><strong>Enclave Registry:</strong> Verify enclave_pubkey or mrenclave against whitelist and epoch validity</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">2.</span>
-                <span><strong>Whitelist Check:</strong> Ensure model_id, prompt_hash, parser_hash match policy</span>
+                <span><strong>TEE Signature:</strong> Validate cryptographic signature using registered enclave public key</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">3.</span>
-                <span><strong>Aggregation:</strong> Calculate median value from multiple reporter submissions</span>
+                <span><strong>Hash Verification:</strong> Confirm blob_hash matches Walrus anchor and report digest</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">4.</span>
-                <span><strong>Optimistic Challenge:</strong> Allow community to dispute with evidence bond</span>
+                <span><strong>Policy Check:</strong> Ensure model_id, prompt_hash, parser_hash, schema_hash match whitelist</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">5.</span>
-                <span><strong>Slashing:</strong> Penalize format violations or hash mismatches immediately</span>
+                <span><strong>Aggregation:</strong> Calculate median value from multiple verified reporter submissions</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-purple-600">6.</span>
-                <span><strong>Finalization:</strong> Market resolves with confidence score and source citations</span>
+                <span><strong>Challenge & Slash:</strong> Optimistic disputes with evidence bonds, immediate slashing for violations</span>
               </li>
             </ul>
           </div>
@@ -243,6 +284,19 @@ export default function HowItWorksPage() {
     "prompt_hash": "0x...",
     "parser_hash": "0x...",
     "schema_hash": "0x..."
+  },
+  "tee_proof": {
+    "enclave_id": "0x123...",
+    "enclave_pubkey": "0xabc...",
+    "mrenclave": "0xdef...",
+    "sig": "0x789...",
+    "attestation": "0x456...",
+    "timestamp": 1672531200,
+    "nonce": "0x999...",
+    "h_in": "0xaaa...",     // SHA256(input)
+    "h_out": "0xbbb...",    // SHA256(output)
+    "blob_id": "0xccc...",
+    "blob_hash": "0xddd..."
   }
 }`}
           </pre>
