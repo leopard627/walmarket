@@ -25,34 +25,52 @@
 
 **Track:** Provably Authentic (Truth Engine + Trust Oracle)
 
-**Problem Statement:** Traditional prediction markets lack transparency and rely on centralized resolution mechanisms. Users must trust operators to fairly resolve outcomes, and there's no way to verify the authenticity of market resolutions.
+**Problem Statement:**
 
-**Our Solution:** Walmarket combines the wisdom of prediction markets with AI-powered verification and Walrus storage to create an unstoppable truth infrastructure where outcomes are cryptographically verified and permanently stored on-chain.
+Traditional AI oracles suffer from a critical trust problem: users must blindly trust that operators run AI models honestly and report results accurately. There's no way to verify:
+- Which AI model was actually used
+- What input data was fed to the model
+- Whether the output was tampered with
+- If the reasoning stored matches what was claimed
+
+**Our Solution:**
+
+Walmarket eliminates oracle trust requirements through **verifiable AI execution**:
+
+1. **Nautilus TEE** - AI inference runs in secure enclaves with cryptographic attestation proving execution integrity
+2. **GPT-5 Single Model Policy** - Consistent, reproducible results with fixed prompts and schemas
+3. **Walrus Evidence Storage** - Complete audit trail (input, output, reasoning) stored immutably
+4. **SUI On-Chain Verification** - Smart contracts validate TEE signatures, enclave registry, and blob hashes
+5. **Economic Security** - Stake, slash, and challenge mechanisms ensure honest reporting
+
+**Result:** The world's first prediction market oracle where AI execution is cryptographically proven, not trusted.
 
 ---
 
 ## 🎯 Overview
 
-Walmarket is a decentralized prediction market platform built on SUI that leverages AI oracles and Walrus storage to create verifiable truth. Users can create and participate in prediction markets on real-world events, with AI agents automatically verifying outcomes using multi-source data analysis.
+Walmarket is the **world's first verifiable AI oracle** for prediction markets, combining Nautilus TEE, GPT-5, and SUI blockchain to create trustless, cryptographically-proven market resolution. Built for the Walrus Haulout Hackathon 2025 (Provably Authentic track), Walmarket eliminates the need to trust oracle operators by running AI inference inside secure enclaves with remote attestation.
 
 ### Why Walmarket?
 
-- **🤖 AI Oracle Verification**: Advanced AI agents automatically resolve markets with unprecedented accuracy
-- **📊 Transparent & Verifiable**: All outcomes stored on Walrus with cryptographic proofs
-- **💰 Economic Truth Incentives**: Earn by making accurate predictions
-- **🔒 Trustless Resolution**: No manual intervention needed - AI does the work
-- **🎨 Retro Gaming Aesthetics**: Unique pixel art design powered by Walrus branding
+- **🔐 Nautilus TEE Integration**: AI inference runs in secure enclaves with cryptographic attestation, proving execution integrity
+- **🤖 Verifiable AI Oracle**: GPT-5 predictions verified through TEE signatures, enclave registry, and on-chain validation
+- **📊 Immutable Evidence Storage**: Complete audit trail (input, output, reasoning) stored permanently on Walrus
+- **⚡ On-Chain Verification**: SUI smart contracts validate TEE attestation, aggregate reports, and enforce slashing
+- **💰 Trustless Resolution**: No operator trust required - cryptographic proofs guarantee honest execution
+- **🎨 Retro Gaming Aesthetics**: Unique pixel art design inspired by Walrus branding
 
 ---
 
 ## ✨ Core Features
 
-### 1. AI-Powered Oracle System
+### 1. Verifiable AI Oracle with Nautilus TEE
+- **Trusted Execution Environment**: GPT-5 inference runs inside Nautilus secure enclaves
+- **Remote Attestation**: Each report includes enclave signature (mrenclave) proving execution integrity
 - **Multi-Source Verification**: AI agents cross-reference multiple trusted data sources
-- **Real-Time Resolution**: Instant market resolution when conditions are met
-- **Transparent Reasoning**: AI decision process stored on Walrus for full auditability
-- **Confidence Levels**: HIGH/MEDIUM/LOW confidence ratings for each prediction
-- **87.3% Win Rate**: Proven track record of accurate predictions
+- **Evidence Bundle Storage**: Complete input/output/reasoning stored on Walrus with blob hash verification
+- **On-Chain Validation**: SUI smart contracts verify TEE signatures against enclave registry whitelist
+- **Replay Protection**: Timestamps and nonces prevent report replay attacks
 
 ### 2. Prediction Markets
 - Create custom prediction markets on any real-world event
@@ -72,10 +90,10 @@ Walmarket is a decentralized prediction market platform built on SUI that levera
 - Address display with truncation
 
 ### 4. Walrus Storage Integration
-- Permanent storage of market outcomes
-- Cryptographic verification of results
-- Tamper-proof record of collective intelligence
-- Decentralized data storage for AI reasoning
+- **Evidence Bundle Storage**: Complete AI oracle reports (input, output, prompts, schemas, reasoning)
+- **Blob Hash Anchoring**: On-chain verification links SUI reports to Walrus evidence via cryptographic hashes
+- **Immutable Audit Trail**: Permanent, tamper-proof record of all oracle decisions
+- **Post-Hoc Verification**: Anyone can audit oracle behavior by fetching evidence bundles from Walrus
 
 ### 5. User Experience
 - Responsive design (desktop & mobile)
@@ -89,23 +107,29 @@ Walmarket is a decentralized prediction market platform built on SUI that levera
 ## 🔄 User Flow
 
 ```
-1. Connect Wallet → 2. Browse Markets → 3. View AI Predictions
+1. Connect Wallet → 2. Browse Markets → 3. Compare Odds
    ↓
-4. Compare Odds → 5. Place Bet → 6. Market Resolution
+4. Place Bet → 5. Market Resolution (TEE Oracle)
    ↓
-7. AI Verification → 8. Walrus Storage → 9. Claim Winnings
+6. On-Chain Verification → 7. Walrus Evidence Storage → 8. Claim Winnings
 ```
 
 ### Detailed Flow
 
 1. **Connect Wallet**: Users connect their SUI-compatible wallet (Phantom, Sui Wallet, etc.)
 2. **Browse Markets**: Explore prediction markets across various categories
-3. **View AI Predictions**: See AI oracle's prediction, confidence level, and reasoning
-4. **Compare Odds**: View crowd predictions vs AI predictions
-5. **Place Bet**: Choose YES or NO, enter amount, and confirm transaction
-6. **Market Resolution**: AI oracle automatically verifies outcome using real-world data
-7. **Verify on Walrus**: Resolution proof stored permanently on Walrus
-8. **Claim Winnings**: Winners automatically receive their earnings
+3. **Compare Odds**: View crowd-determined YES/NO probabilities
+4. **Place Bet**: Choose YES or NO, enter amount, and confirm transaction on SUI
+5. **Market Resolution**:
+   - Off-chain: Nautilus TEE executes GPT-5 inference with multi-source data
+   - Evidence bundle (input, output, reasoning) uploaded to Walrus
+   - TEE generates cryptographic signature and attestation
+6. **On-Chain Verification**:
+   - SUI smart contract validates enclave signature against registry whitelist
+   - Blob hash verified against Walrus anchor
+   - Multiple reporter submissions aggregated (median)
+7. **Walrus Evidence Storage**: Complete audit trail permanently stored with blob_id
+8. **Claim Winnings**: Winners receive earnings based on verified market outcome
 
 ---
 
