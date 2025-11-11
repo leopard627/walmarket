@@ -55,6 +55,9 @@ const MOCK_MARKETS = [
     participants: 654,
     createdBy: '0x9876...5432',
     createdAt: '2025-01-20',
+    aiPrediction: 0.62,
+    aiConfidence: 0.68,
+    aiReasoning: 'Rapid adoption of AI tools and exponential growth in LLM capabilities suggest accelerating trend toward AI-generated content proliferation.',
   },
   {
     id: '4',
@@ -69,6 +72,9 @@ const MOCK_MARKETS = [
     participants: 1532,
     createdBy: '0xdef0...1234',
     createdAt: '2025-01-05',
+    aiPrediction: 0.67,
+    aiConfidence: 0.79,
+    aiReasoning: 'Strong ecosystem growth, increasing developer activity, and strategic partnerships position SUI for significant TVL expansion in 2025.',
   },
   {
     id: '5',
@@ -83,6 +89,9 @@ const MOCK_MARKETS = [
     participants: 478,
     createdBy: '0xfed9...8765',
     createdAt: '2025-01-12',
+    aiPrediction: 0.38,
+    aiConfidence: 0.64,
+    aiReasoning: 'Political and economic barriers remain significant. While several nations show interest, actual adoption requires overcoming substantial regulatory hurdles.',
   },
   {
     id: '6',
@@ -97,6 +106,9 @@ const MOCK_MARKETS = [
     participants: 321,
     createdBy: '0x3141...5926',
     createdAt: '2025-01-18',
+    aiPrediction: 0.51,
+    aiConfidence: 0.72,
+    aiReasoning: 'Network growth trajectory and increasing adoption by dApps suggest moderate probability of reaching 1PB milestone by year end.',
   },
 ];
 
