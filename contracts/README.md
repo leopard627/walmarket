@@ -110,12 +110,15 @@ This will:
 
 After deployment, mint test USDT tokens to your address:
 ```bash
-# Mint 1000 USDT (1000000000 = 1000 * 10^6)
-./scripts/mint_usdt.sh <TREASURY_CAP_ID> 1000000000 $(sui client active-address)
+# Method 1: Pass Package ID as 4th argument
+./scripts/mint_usdt.sh <TREASURY_CAP_ID> 1000000000 $(sui client active-address) <PACKAGE_ID>
 
-# Or use the environment variable
+# Method 2: Set environment variable
 export PACKAGE_ID=<your_package_id>
 ./scripts/mint_usdt.sh <TREASURY_CAP_ID> 1000000000 $(sui client active-address)
+
+# Example (mint 1000 USDT):
+./scripts/mint_usdt.sh 0xdb8d1f0c27b12fc8a6daed7721f40f49397cd100f1c8591d88204c948c00681c 1000000000 $(sui client active-address) 0xae3273cb0f33d575f9165df267df7e6c18eac407364e8f4bd0d1f359ab4a19b6
 ```
 
 **Note:** USDT uses 6 decimals, so:

@@ -34,9 +34,9 @@ DEPLOY_OUTPUT=$(sui client publish --gas-budget 100000000 2>&1)
 
 echo "$DEPLOY_OUTPUT"
 
-# Extract package ID and treasury cap ID from output
-PACKAGE_ID=$(echo "$DEPLOY_OUTPUT" | grep -oP 'Package ID: \K[0-9a-fx]+' || echo "$DEPLOY_OUTPUT" | grep -A1 "Published Objects:" | grep "PackageID" | awk '{print $4}')
-TREASURY_CAP=$(echo "$DEPLOY_OUTPUT" | grep "TreasuryCap" | grep -oP '0x[0-9a-f]+' | head -1)
+# Extract package ID and treasury cap ID from output (macOS compatible)
+PACKAGE_ID=$(echo "$DEPLOY_OUTPUT" | grep "PackageID:" | awk '{print $2}' | head -1)
+TREASURY_CAP=$(echo "$DEPLOY_OUTPUT" | grep "TreasuryCap" | grep -o '0x[0-9a-f]\{64\}' | head -1)
 
 echo ""
 echo -e "${GREEN}╔════════════════════════════════════════╗${NC}"
