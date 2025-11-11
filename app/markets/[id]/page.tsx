@@ -310,45 +310,61 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
 
                   {/* Potential Return */}
                   {betAmount && selectedOutcome && parseFloat(betAmount) > 0 && (
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-4 rounded-lg">
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-sm text-gray-700 font-medium">You&apos;re betting</span>
-                        <div className="flex items-center gap-1">
-                          <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
-                          <span className="text-sm font-semibold text-gray-900">
-                            {parseFloat(betAmount).toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                          </span>
-                        </div>
-                      </div>
+                    (() => {
+                      const bet = parseFloat(betAmount);
+                      const price = selectedOutcome === 'yes' ? market.yesPrice : market.noPrice;
+                      // Shares you get = bet / price
+                      const shares = bet / price;
+                      // If you win, each share is worth 1 USDT
+                      const potentialPayout = shares * 1;
+                      // Profit = payout - original bet
+                      const profit = potentialPayout - bet;
+                      const profitPercent = (profit / bet) * 100;
 
-                      <div className="h-px bg-green-200 my-3" />
+                      return (
+                        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-5 rounded-lg space-y-3">
+                          {/* Bet Amount */}
+                          <div className="flex justify-between items-center pb-3 border-b border-green-200">
+                            <span className="text-sm text-gray-600">Bet amount</span>
+                            <div className="flex items-center gap-1.5">
+                              <Image src="/usdt.png" alt="USDT" width={18} height={18} className="w-[18px] h-[18px]" />
+                              <span className="text-base font-bold text-gray-900">
+                                {bet.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              </span>
+                            </div>
+                          </div>
 
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-700">Potential payout</span>
-                          <div className="flex items-center gap-1">
-                            <Image src="/usdt.png" alt="USDT" width={18} height={18} className="w-[18px] h-[18px]" />
-                            <span className="text-lg font-bold text-gray-900">
-                              {(parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)).toFixed(2)}
+                          {/* Profit Display - Most Important */}
+                          <div className="flex justify-between items-center py-2 bg-green-100/50 -mx-2 px-2 rounded">
+                            <span className="text-base font-bold text-green-800">Profit if you win</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-2xl font-bold text-green-600">
+                                +{profit.toFixed(2)}
+                              </span>
+                              <Image src="/usdt.png" alt="USDT" width={20} height={20} className="w-5 h-5" />
+                            </div>
+                          </div>
+
+                          {/* Total Payout */}
+                          <div className="flex justify-between items-center pt-2">
+                            <span className="text-sm text-gray-600">Total payout</span>
+                            <div className="flex items-center gap-1.5">
+                              <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
+                              <span className="text-base font-semibold text-gray-900">
+                                {potentialPayout.toFixed(2)}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Return Percentage */}
+                          <div className="text-center pt-2 border-t border-green-200">
+                            <span className="text-xs font-medium text-green-700">
+                              {profitPercent.toFixed(1)}% return on investment
                             </span>
                           </div>
                         </div>
-
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold text-green-700">To win</span>
-                          <div className="flex items-center gap-1">
-                            <span className="text-xl font-bold text-green-600">
-                              +{((parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)) - parseFloat(betAmount)).toFixed(2)}
-                            </span>
-                            <Image src="/usdt.png" alt="USDT" width={18} height={18} className="w-[18px] h-[18px]" />
-                          </div>
-                        </div>
-
-                        <div className="text-xs text-gray-600 text-right mt-1">
-                          ({(((parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)) - parseFloat(betAmount)) / parseFloat(betAmount) * 100).toFixed(1)}% profit)
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })()
                   )}
 
                   {/* Place Bet Button */}
