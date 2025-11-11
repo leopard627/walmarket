@@ -309,21 +309,43 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   </div>
 
                   {/* Potential Return */}
-                  {betAmount && selectedOutcome && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-gray-600">Shares</span>
-                        <span className="font-semibold">
-                          {(parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)).toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Potential Return</span>
+                  {betAmount && selectedOutcome && parseFloat(betAmount) > 0 && (
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-4 rounded-lg">
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-sm text-gray-700 font-medium">You&apos;re betting</span>
                         <div className="flex items-center gap-1">
                           <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
-                          <span className="font-semibold text-green-600">
-                            {(parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)).toFixed(2)}
+                          <span className="text-sm font-semibold text-gray-900">
+                            {parseFloat(betAmount).toLocaleString('en-US', { maximumFractionDigits: 2 })}
                           </span>
+                        </div>
+                      </div>
+
+                      <div className="h-px bg-green-200 my-3" />
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-700">Potential payout</span>
+                          <div className="flex items-center gap-1">
+                            <Image src="/usdt.png" alt="USDT" width={18} height={18} className="w-[18px] h-[18px]" />
+                            <span className="text-lg font-bold text-gray-900">
+                              {(parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-semibold text-green-700">To win</span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xl font-bold text-green-600">
+                              +{((parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)) - parseFloat(betAmount)).toFixed(2)}
+                            </span>
+                            <Image src="/usdt.png" alt="USDT" width={18} height={18} className="w-[18px] h-[18px]" />
+                          </div>
+                        </div>
+
+                        <div className="text-xs text-gray-600 text-right mt-1">
+                          ({(((parseFloat(betAmount) / (selectedOutcome === 'yes' ? market.yesPrice : market.noPrice)) - parseFloat(betAmount)) / parseFloat(betAmount) * 100).toFixed(1)}% profit)
                         </div>
                       </div>
                     </div>
