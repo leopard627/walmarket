@@ -230,14 +230,18 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
           {/* Trading Panel */}
           <div className="lg:col-span-1">
             <div className="bg-white p-6 rounded-xl shadow-sm sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold">Place Your Bet</h3>
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xl font-bold">Place Your Bet</h3>
+                </div>
                 {account && (
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-orange-50 border border-orange-200 rounded-lg">
-                    <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
-                    <span className="text-xs font-semibold text-gray-900">
+                  <div className="flex items-center gap-1.5 px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg w-full">
+                    <span className="text-xs text-gray-600 whitespace-nowrap">Balance:</span>
+                    <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-sm font-bold text-gray-900 break-all">
                       {isBalanceLoading ? '...' : balance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
                     </span>
+                    <span className="text-xs text-gray-500 ml-auto whitespace-nowrap">USDT</span>
                   </div>
                 )}
               </div>

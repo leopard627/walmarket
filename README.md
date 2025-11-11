@@ -165,6 +165,7 @@ The following test USDT tokens have been deployed and minted for testing:
 - **Treasury Cap ID**: `0x014367974122be63c27c5ec3a51c0e92e7e34bbb8a48fc99c48c444505e677bf`
 - **Market Registry ID**: `0xec89a1e95991bb73e1e521540036d8ffc3eb5892a4629e616873d4586a00c4df`
 - **USDT Token Type**: `0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d::usdt::USDT`
+- **Suiscan Explorer**: [View USDT Token on Suiscan](https://suiscan.xyz/testnet/coin/0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d::usdt::USDT/txs)
 
 ### Initial Minting
 - **Amount**: 1,000,000 USDT (1M USDT)
