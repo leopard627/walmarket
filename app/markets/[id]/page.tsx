@@ -7,6 +7,7 @@ import { Header } from "../../components/Header";
 import { WalletButton } from "../../components/WalletButton";
 import { Footer } from "../../components/Footer";
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useUSDTBalance } from "../../hooks/useUSDTBalance";
 
 // Mock data - same as markets page for consistency
 const MOCK_MARKETS = [
@@ -99,6 +100,7 @@ const MOCK_MARKETS = [
 export default function MarketDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const account = useCurrentAccount();
+  const { balance, isLoading: isBalanceLoading } = useUSDTBalance();
   const [betAmount, setBetAmount] = useState('');
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no' | null>(null);
 
@@ -228,7 +230,17 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
           {/* Trading Panel */}
           <div className="lg:col-span-1">
             <div className="bg-white p-6 rounded-xl shadow-sm sticky top-24">
-              <h3 className="text-xl font-bold mb-6">Place Your Bet</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold">Place Your Bet</h3>
+                {account && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-orange-50 border border-orange-200 rounded-lg">
+                    <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
+                    <span className="text-xs font-semibold text-gray-900">
+                      {isBalanceLoading ? '...' : balance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                )}
+              </div>
 
               {!account ? (
                 <div className="text-center py-8">
@@ -270,17 +282,30 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
 
                   {/* Amount Input */}
                   <div>
-                    <label className="flex items-center gap-1.5 text-sm font-medium text-gray-700 mb-2">
-                      <span>Amount</span>
-                      <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
-                    </label>
-                    <input
-                      type="number"
-                      value={betAmount}
-                      onChange={(e) => setBetAmount(e.target.value)}
-                      placeholder="0.00"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="flex items-center gap-1.5 text-sm font-medium text-gray-700">
+                        <span>Amount</span>
+                        <Image src="/usdt.png" alt="USDT" width={16} height={16} className="w-4 h-4" />
+                      </label>
+                      <button
+                        onClick={() => setBetAmount(balance.toString())}
+                        className="text-xs text-orange-600 hover:text-orange-700 font-medium"
+                      >
+                        MAX
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={betAmount}
+                        onChange={(e) => setBetAmount(e.target.value)}
+                        placeholder="0.00"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      />
+                      {betAmount && parseFloat(betAmount) > balance && (
+                        <p className="text-xs text-red-600 mt-1">Insufficient balance</p>
+                      )}
+                    </div>
                   </div>
 
                   {/* Potential Return */}
@@ -307,10 +332,10 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   {/* Place Bet Button */}
                   <button
                     onClick={handlePlaceBet}
-                    disabled={!selectedOutcome || !betAmount}
+                    disabled={!selectedOutcome || !betAmount || parseFloat(betAmount) > balance || parseFloat(betAmount) <= 0}
                     className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
-                    Place Bet
+                    {parseFloat(betAmount) > balance ? 'Insufficient Balance' : 'Place Bet'}
                   </button>
 
                   <p className="text-xs text-gray-500 text-center">
