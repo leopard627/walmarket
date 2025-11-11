@@ -126,7 +126,8 @@ Walmarket is a decentralized prediction market platform built on SUI that levera
 
 ### Infrastructure
 - **Storage**: Walrus (for verifiable data storage)
-- **AI Oracle**: Custom AI agents for market resolution
+- **AI Oracle**: GPT-5 with custom verification agents
+- **TEE**: Nautilus (Trusted Execution Environment for verifiable AI execution)
 - **Deployment**: Vercel (frontend), SUI Testnet/Mainnet
 
 ---
@@ -271,10 +272,19 @@ walmarket/
 
 1. **Data Collection**: AI agents monitor multiple trusted data sources
 2. **Multi-Source Verification**: Cross-reference data from at least 3 independent sources
-3. **Consensus Building**: AI algorithms determine outcome with confidence score
-4. **Cryptographic Proof**: Generate verifiable proof of decision process
-5. **Walrus Storage**: Store proof and reasoning permanently on Walrus
-6. **Market Resolution**: Execute smart contract to distribute winnings
+3. **TEE Execution**: Run GPT-5 inference inside Nautilus secure enclave
+4. **Cryptographic Attestation**: Generate TEE signature and remote attestation proof
+5. **Walrus Storage**: Store evidence bundle (input, output, reasoning) permanently on Walrus
+6. **On-Chain Verification**: SUI smart contract verifies TEE attestation and blob hash
+7. **Market Resolution**: Aggregate verified reports and distribute winnings
+
+### Verifiable AI Execution with Nautilus TEE
+
+- **Execution Integrity**: AI inference runs in secure enclaves, preventing operator tampering
+- **Remote Attestation**: Each report includes cryptographic proof of execution (mrenclave, signatures)
+- **Enclave Registry**: On-chain whitelist of authorized enclaves with epoch-based key rotation
+- **Replay Protection**: Timestamps and nonces prevent report replay attacks
+- **Hash Verification**: Input/output hashes link on-chain reports to off-chain evidence on Walrus
 
 ---
 
