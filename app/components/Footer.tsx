@@ -89,6 +89,17 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href="https://sui.io/nautilus"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-orange-600 transition-colors flex items-center gap-2"
+                >
+                  <span className="text-base">🐚</span>
+                  Nautilus
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://docs.sui.io"
                   target="_blank"
                   rel="noopener noreferrer"
