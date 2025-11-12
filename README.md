@@ -72,12 +72,14 @@ Walmarket is the **world's first verifiable AI oracle** for prediction markets, 
 - **On-Chain Validation**: SUI smart contracts verify TEE signatures against enclave registry whitelist
 - **Replay Protection**: Timestamps and nonces prevent report replay attacks
 
-### 2. Prediction Markets
+### 2. USDT-Based Prediction Markets
 - Create custom prediction markets on any real-world event
-- Binary outcome markets (YES/NO)
+- **USDT Trading**: All markets use USDT stablecoin (6 decimals) for predictable value
+- Binary outcome markets (YES/NO) with transparent odds
 - Market categories: Crypto, Technology, DeFi, Politics, Infrastructure
-- Real-time odds based on collective wisdom
+- Real-time odds based on collective wisdom and pool ratios
 - Volume tracking and participant statistics
+- **Walrus Metadata**: Market details stored immutably on Walrus for auditability
 
 ### 3. Wallet Integration
 - **Supported Wallets**:
@@ -94,10 +96,32 @@ Walmarket is the **world's first verifiable AI oracle** for prediction markets, 
 - Automatic wallet detection
 
 ### 4. Walrus Storage Integration
-- **Evidence Bundle Storage**: Complete AI oracle reports (input, output, prompts, schemas, reasoning)
-- **Blob Hash Anchoring**: On-chain verification links SUI reports to Walrus evidence via cryptographic hashes
+- **Market Metadata Storage**: Full market details (descriptions, images, sources) stored on Walrus
+  - `walrus_metadata_blob_id` stored on-chain for each market
+  - Rich metadata beyond on-chain storage limits
+  - Immutable market documentation
+- **Oracle Evidence Bundle**: Complete AI oracle reports stored on Walrus
+  - Input data and sources used for resolution
+  - GPT-5 reasoning and analysis
+  - TEE attestation and cryptographic proofs
+  - `oracle_evidence_blob_id` anchored on-chain
+- **Blob Hash Verification**: On-chain contracts verify blob hashes against Walrus storage
 - **Immutable Audit Trail**: Permanent, tamper-proof record of all oracle decisions
 - **Post-Hoc Verification**: Anyone can audit oracle behavior by fetching evidence bundles from Walrus
+
+**Example Walrus Usage:**
+```typescript
+// Market Creation
+1. Upload metadata JSON to Walrus → get blob_id
+2. Call create_market(title, description, category, end_date, blob_id)
+3. Market stores blob_id on-chain, anyone can fetch full metadata
+
+// Oracle Resolution
+1. AI generates evidence bundle with reasoning + sources
+2. Upload evidence to Walrus → get blob_id
+3. Call resolve_market(outcome, evidence_blob_id)
+4. Anyone can verify AI decision by fetching blob from Walrus
+```
 
 ### 5. User Experience
 - Responsive design (desktop & mobile)
@@ -123,7 +147,7 @@ Walmarket is the **world's first verifiable AI oracle** for prediction markets, 
 1. **Connect Wallet**: Users connect their SUI-compatible wallet (Phantom, Sui Wallet, etc.)
 2. **Browse Markets**: Explore prediction markets across various categories
 3. **Compare Odds**: View crowd-determined YES/NO probabilities
-4. **Place Bet**: Choose YES or NO, enter amount, and confirm transaction on SUI
+4. **Place Bet**: Choose YES or NO, enter USDT amount, and confirm transaction on SUI
 5. **Market Resolution**:
    - Off-chain: Nautilus TEE executes GPT-5 inference with multi-source data
    - Evidence bundle (input, output, reasoning) uploaded to Walrus
@@ -289,7 +313,10 @@ walmarket/
 │   └── globals.css                # Global styles + pixel font
 ├── contracts/
 │   ├── sources/
-│   │   └── market.move            # Prediction market smart contract
+│   │   ├── market.move            # USDT-based prediction market contract
+│   │   └── usdt.move              # Test USDT token contract (6 decimals)
+│   ├── scripts/
+│   │   └── mint_usdt.sh           # Script to mint test USDT
 │   ├── tests/                     # Contract tests
 │   ├── Move.toml                  # Move package configuration
 │   └── README.md                  # Contract documentation
@@ -313,7 +340,13 @@ walmarket/
 - **`app/globals.css`**: Global styles including Press Start 2P pixel font configuration
 
 #### Smart Contracts
-- **`contracts/sources/market.move`**: Main prediction market contract (Market creation, betting, resolution)
+- **`contracts/sources/market.move`**: USDT-based prediction market contract with Walrus integration
+  - Market creation with Walrus metadata blob ID
+  - USDT betting with pool-based odds
+  - Oracle resolution with Walrus evidence blob ID
+  - Winnings distribution and position tracking
+- **`contracts/sources/usdt.move`**: Test USDT token (6 decimals) for prediction markets
+- **`contracts/scripts/mint_usdt.sh`**: Helper script to mint test USDT tokens
 - **`contracts/Move.toml`**: SUI Move package configuration
 - **`contracts/README.md`**: Comprehensive contract documentation and API reference
 
@@ -321,9 +354,13 @@ walmarket/
 
 ## 💡 How It Works
 
-### AI Oracle Architecture
+### AI Oracle Architecture with Trusted Data Sources
 
 1. **Data Collection**: AI agents monitor multiple trusted data sources
+   - **Crypto Markets**: CoinMarketCap, CoinGecko, Coinbase, Binance APIs
+   - **Traditional Finance**: Bloomberg, Reuters, Yahoo Finance
+   - **Sports**: ESPN, Official League APIs
+   - **Politics**: AP News, Reuters, Fox News, Official Government Sources
 2. **Multi-Source Verification**: Cross-reference data from at least 3 independent sources
 3. **TEE Execution**: Run GPT-5 inference inside Nautilus secure enclave
 4. **Cryptographic Attestation**: Generate TEE signature and remote attestation proof
@@ -338,6 +375,42 @@ walmarket/
 - **Enclave Registry**: On-chain whitelist of authorized enclaves with epoch-based key rotation
 - **Replay Protection**: Timestamps and nonces prevent report replay attacks
 - **Hash Verification**: Input/output hashes link on-chain reports to off-chain evidence on Walrus
+
+**Example Oracle Evidence Bundle (stored on Walrus):**
+```json
+{
+  "market_id": "0xabc123...",
+  "question": "Will BTC reach $100,000 by Dec 2025?",
+  "outcome": "YES",
+  "resolution_date": "2025-12-31T23:59:59Z",
+  "sources": [
+    {
+      "name": "CoinMarketCap",
+      "url": "https://coinmarketcap.com/currencies/bitcoin/",
+      "timestamp": "2025-12-31T20:00:00Z",
+      "btc_price": "$102,450"
+    },
+    {
+      "name": "CoinGecko",
+      "url": "https://coingecko.com/en/coins/bitcoin",
+      "timestamp": "2025-12-31T20:01:00Z",
+      "btc_price": "$102,380"
+    },
+    {
+      "name": "Binance",
+      "url": "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT",
+      "timestamp": "2025-12-31T20:02:00Z",
+      "btc_price": "$102,420"
+    }
+  ],
+  "reasoning": "Based on 3 independent sources (CoinMarketCap, CoinGecko, Binance), Bitcoin's price was confirmed above $100,000 on December 31, 2025. Average price: $102,416. All sources agree the threshold was exceeded.",
+  "tee_attestation": {
+    "mrenclave": "0xdef456...",
+    "signature": "0x789abc...",
+    "timestamp": "2025-12-31T20:05:00Z"
+  }
+}
+```
 
 ---
 

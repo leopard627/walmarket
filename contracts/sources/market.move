@@ -3,10 +3,10 @@ module walmarket::market {
     use sui::tx_context::{Self, TxContext};
     use sui::transfer;
     use sui::coin::{Self, Coin};
-    use sui::sui::SUI;
     use sui::balance::{Self, Balance};
     use sui::table::{Self, Table};
     use sui::event;
+    use walmarket::usdt::USDT;
 
     /// Market struct representing a prediction market
     public struct Market has key, store {
@@ -19,16 +19,22 @@ module walmarket::market {
         category: vector<u8>,
         /// End timestamp (in milliseconds)
         end_date: u64,
-        /// Total volume in YES position
-        yes_pool: Balance<SUI>,
-        /// Total volume in NO position
-        no_pool: Balance<SUI>,
+        /// Total volume in YES position (in USDT)
+        yes_pool: Balance<USDT>,
+        /// Total volume in NO position (in USDT)
+        no_pool: Balance<USDT>,
         /// Market creator address
         creator: address,
         /// Market status: 0 = Active, 1 = Resolved YES, 2 = Resolved NO, 3 = Cancelled
         status: u8,
         /// Resolution outcome (0 = pending, 1 = YES, 2 = NO)
         outcome: u8,
+        /// Walrus blob ID for market metadata (description, images, etc.)
+        walrus_metadata_blob_id: vector<u8>,
+        /// Walrus blob ID for oracle evidence (AI reasoning, sources, etc.)
+        oracle_evidence_blob_id: vector<u8>,
+        /// Oracle reporter address (TEE attested)
+        oracle_reporter: address,
     }
 
     /// Position struct representing a user's bet
@@ -40,7 +46,7 @@ module walmarket::market {
         owner: address,
         /// Prediction: true = YES, false = NO
         prediction: bool,
-        /// Amount staked
+        /// Amount staked (in USDT with 6 decimals)
         amount: u64,
         /// Timestamp when position was created
         created_at: u64,
@@ -51,6 +57,8 @@ module walmarket::market {
         id: UID,
         /// Counter for total markets created
         market_count: u64,
+        /// Mapping of market IDs for enumeration
+        market_ids: Table<u64, address>,
     }
 
     // ===== Events =====
@@ -60,6 +68,7 @@ module walmarket::market {
         creator: address,
         title: vector<u8>,
         end_date: u64,
+        walrus_blob_id: vector<u8>,
     }
 
     public struct BetPlaced has copy, drop {
@@ -72,6 +81,14 @@ module walmarket::market {
     public struct MarketResolved has copy, drop {
         market_id: address,
         outcome: u8,
+        oracle_reporter: address,
+        oracle_evidence_blob_id: vector<u8>,
+    }
+
+    public struct WinningsClaimed has copy, drop {
+        market_id: address,
+        user: address,
+        payout: u64,
     }
 
     // ===== Error Codes =====
@@ -82,6 +99,9 @@ module walmarket::market {
     const E_INVALID_AMOUNT: u64 = 4;
     const E_NOT_CREATOR: u64 = 5;
     const E_INVALID_OUTCOME: u64 = 6;
+    const E_WRONG_MARKET: u64 = 7;
+    const E_ALREADY_CLAIMED: u64 = 8;
+    const E_INVALID_BLOB_ID: u64 = 9;
 
     // ===== Initialization =====
 
@@ -90,21 +110,26 @@ module walmarket::market {
         let registry = MarketRegistry {
             id: object::new(ctx),
             market_count: 0,
+            market_ids: table::new(ctx),
         };
         transfer::share_object(registry);
     }
 
     // ===== Public Functions =====
 
-    /// Create a new prediction market
+    /// Create a new prediction market with Walrus metadata storage
     public entry fun create_market(
-        _registry: &mut MarketRegistry,
+        registry: &mut MarketRegistry,
         title: vector<u8>,
         description: vector<u8>,
         category: vector<u8>,
         end_date: u64,
+        walrus_blob_id: vector<u8>, // Blob ID from Walrus where full metadata is stored
         ctx: &mut TxContext
     ) {
+        // Validate blob ID is not empty
+        assert!(vector::length(&walrus_blob_id) > 0, E_INVALID_BLOB_ID);
+
         let market_id = object::new(ctx);
         let market_address = object::uid_to_address(&market_id);
 
@@ -119,23 +144,31 @@ module walmarket::market {
             creator: tx_context::sender(ctx),
             status: 0, // Active
             outcome: 0, // Pending
+            walrus_metadata_blob_id: walrus_blob_id,
+            oracle_evidence_blob_id: vector::empty(),
+            oracle_reporter: @0x0,
         };
+
+        // Track market in registry
+        table::add(&mut registry.market_ids, registry.market_count, market_address);
+        registry.market_count = registry.market_count + 1;
 
         event::emit(MarketCreated {
             market_id: market_address,
             creator: tx_context::sender(ctx),
             title: market.title,
             end_date,
+            walrus_blob_id: market.walrus_metadata_blob_id,
         });
 
         transfer::share_object(market);
     }
 
-    /// Place a bet on a market
+    /// Place a bet on a market using USDT
     public entry fun place_bet(
         market: &mut Market,
         prediction: bool, // true = YES, false = NO
-        payment: Coin<SUI>,
+        payment: Coin<USDT>,
         ctx: &mut TxContext
     ) {
         // Market must be active
@@ -172,23 +205,30 @@ module walmarket::market {
         transfer::transfer(position, tx_context::sender(ctx));
     }
 
-    /// Resolve a market (only creator or oracle can call)
+    /// Resolve a market with oracle evidence stored on Walrus
+    /// In production, this should verify TEE attestation
     public entry fun resolve_market(
         market: &mut Market,
         outcome: u8, // 1 = YES, 2 = NO
+        oracle_evidence_blob_id: vector<u8>, // Walrus blob ID containing AI reasoning, sources, TEE proof
         ctx: &mut TxContext
     ) {
-        // Only creator can resolve for now (will add oracle logic later)
+        // Only creator can resolve for now (TODO: add TEE oracle verification)
         assert!(tx_context::sender(ctx) == market.creator, E_NOT_CREATOR);
         assert!(market.status == 0, E_MARKET_ALREADY_RESOLVED);
         assert!(outcome == 1 || outcome == 2, E_INVALID_OUTCOME);
+        assert!(vector::length(&oracle_evidence_blob_id) > 0, E_INVALID_BLOB_ID);
 
         market.status = outcome;
         market.outcome = outcome;
+        market.oracle_evidence_blob_id = oracle_evidence_blob_id;
+        market.oracle_reporter = tx_context::sender(ctx);
 
         event::emit(MarketResolved {
             market_id: object::uid_to_address(&market.id),
             outcome,
+            oracle_reporter: market.oracle_reporter,
+            oracle_evidence_blob_id: market.oracle_evidence_blob_id,
         });
     }
 
@@ -200,7 +240,11 @@ module walmarket::market {
     ) {
         assert!(market.status != 0, E_MARKET_NOT_ENDED);
 
-        let Position { id, market_id: _, owner, prediction, amount, created_at: _ } = position;
+        let Position { id, market_id, owner, prediction, amount, created_at: _ } = position;
+
+        // Verify position belongs to this market
+        assert!(market_id == object::uid_to_address(&market.id), E_WRONG_MARKET);
+
         object::delete(id);
 
         // Check if position won
@@ -226,12 +270,23 @@ module walmarket::market {
             let mut payout_balance = balance::split(winning_pool, amount);
             if (balance::value(losing_pool) > 0 && payout > amount) {
                 let profit = payout - amount;
-                let profit_balance = balance::split(losing_pool, profit);
-                balance::join(&mut payout_balance, profit_balance);
+                let available_profit = balance::value(losing_pool);
+                let actual_profit = if (profit > available_profit) { available_profit } else { profit };
+                if (actual_profit > 0) {
+                    let profit_balance = balance::split(losing_pool, actual_profit);
+                    balance::join(&mut payout_balance, profit_balance);
+                };
             };
 
+            let final_payout = balance::value(&payout_balance);
             let payout_coin = coin::from_balance(payout_balance, ctx);
             transfer::public_transfer(payout_coin, owner);
+
+            event::emit(WinningsClaimed {
+                market_id: market_id,
+                user: owner,
+                payout: final_payout,
+            });
         }
         // If lost, position is simply burned
     }
@@ -249,5 +304,21 @@ module walmarket::market {
 
     public fun get_no_pool(market: &Market): u64 {
         balance::value(&market.no_pool)
+    }
+
+    public fun get_walrus_metadata_blob_id(market: &Market): vector<u8> {
+        market.walrus_metadata_blob_id
+    }
+
+    public fun get_oracle_evidence_blob_id(market: &Market): vector<u8> {
+        market.oracle_evidence_blob_id
+    }
+
+    public fun get_total_markets(registry: &MarketRegistry): u64 {
+        registry.market_count
+    }
+
+    public fun get_market_by_index(registry: &MarketRegistry, index: u64): address {
+        *table::borrow(&registry.market_ids, index)
     }
 }
