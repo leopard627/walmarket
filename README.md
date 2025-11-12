@@ -316,9 +316,24 @@ Create a `.env.local` file in the root directory:
 # SUI Network Configuration
 NEXT_PUBLIC_SUI_NETWORK=testnet
 
+# Test USDT + Market Contract Package (Latest Deployment)
+# Package ID: The deployed contract with Walrus integration
+NEXT_PUBLIC_PACKAGE_ID=0x03746b9be956d9964e460a0fe401b46e7af331e912fb9aca4d5fefebb38ae9fb
+
+# Market Registry ID: Shared object for managing markets
+NEXT_PUBLIC_MARKET_REGISTRY_ID=0xea117fd8fe57fcbd3412ed2e265ee63e0773d91b5ca8f52c7bfd10c3d3a0e976
+
+# USDT Treasury Cap ID: Authority to mint test USDT tokens (keep this secure!)
+NEXT_PUBLIC_TREASURY_CAP_ID=0xb0875388986c88bd91d9558c7e486e424601b508d50d7e3b98759d77999f26b6
+
+# USDT Token Type (for wallet integration and transactions)
+NEXT_PUBLIC_USDT_TYPE=0x03746b9be956d9964e460a0fe401b46e7af331e912fb9aca4d5fefebb38ae9fb::usdt::USDT
+
 # Optional: Add your custom RPC endpoints
 NEXT_PUBLIC_SUI_RPC_URL=https://fullnode.testnet.sui.io:443
 ```
+
+**Note:** These are testnet addresses from the latest deployment. For production, deploy to mainnet and update these values.
 
 ### Run Development Server
 ```bash
@@ -396,9 +411,10 @@ walmarket/
 │   └── globals.css                # Global styles + pixel font
 ├── contracts/
 │   ├── sources/
-│   │   ├── market.move            # USDT-based prediction market contract
+│   │   ├── market.move            # USDT-based prediction market contract with Walrus
 │   │   └── usdt.move              # Test USDT token contract (6 decimals)
 │   ├── scripts/
+│   │   ├── create_market_with_walrus.sh  # Create market with Walrus metadata
 │   │   └── mint_usdt.sh           # Script to mint test USDT
 │   ├── tests/                     # Contract tests
 │   ├── Move.toml                  # Move package configuration
@@ -429,6 +445,11 @@ walmarket/
   - Oracle resolution with Walrus evidence blob ID
   - Winnings distribution and position tracking
 - **`contracts/sources/usdt.move`**: Test USDT token (6 decimals) for prediction markets
+- **`contracts/scripts/create_market_with_walrus.sh`**: Automated market creation with Walrus storage
+  - Uploads images to Walrus (supports local files and URLs)
+  - Creates metadata JSON with trusted data sources
+  - Uploads metadata to Walrus and gets blob ID
+  - Creates market on-chain with Walrus blob reference
 - **`contracts/scripts/mint_usdt.sh`**: Helper script to mint test USDT tokens
 - **`contracts/Move.toml`**: SUI Move package configuration
 - **`contracts/README.md`**: Comprehensive contract documentation and API reference
