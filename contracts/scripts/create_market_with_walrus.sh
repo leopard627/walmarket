@@ -15,17 +15,19 @@ if [ "$#" -lt 4 ]; then
     echo -e "${RED}Usage: $0 <title> <description> <category> <end_timestamp> [image_files_or_urls...]${NC}"
     echo ""
     echo "Examples:"
-    echo "  # No images"
-    echo "  $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000"
+    echo "  # No images (use single quotes for \$ in title)"
+    echo "  $0 'Will BTC reach \$100k?' 'Bitcoin price prediction' 'Crypto' 1735689600000"
     echo ""
     echo "  # With local image files"
-    echo "  $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000 chart.png logo.jpg"
+    echo "  $0 'Will BTC reach \$100k?' 'Bitcoin price prediction' 'Crypto' 1735689600000 chart.png logo.jpg"
     echo ""
     echo "  # With image URLs"
-    echo "  $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000 https://example.com/chart.png"
+    echo "  $0 'Will BTC reach \$100k?' 'Bitcoin price prediction' 'Crypto' 1735689600000 https://example.com/chart.png"
     echo ""
     echo "  # Mix of files and URLs"
-    echo "  $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000 chart.png https://example.com/logo.png"
+    echo "  $0 'Will BTC reach \$100k?' 'Bitcoin price prediction' 'Crypto' 1735689600000 chart.png https://example.com/logo.png"
+    echo ""
+    echo "Note: Use single quotes (') instead of double quotes (\") to preserve \$ signs in your text."
     exit 1
 fi
 
@@ -247,11 +249,11 @@ sui client call \
     --function create_market \
     --args \
         "$MARKET_REGISTRY" \
-        "vector<u8>[0x$TITLE_HEX]" \
-        "vector<u8>[0x$DESC_HEX]" \
-        "vector<u8>[0x$CATEGORY_HEX]" \
+        "[0x$TITLE_HEX]" \
+        "[0x$DESC_HEX]" \
+        "[0x$CATEGORY_HEX]" \
         "$END_DATE" \
-        "vector<u8>[0x$BLOB_ID_HEX]" \
+        "[0x$BLOB_ID_HEX]" \
     --gas-budget 100000000
 
 echo ""
