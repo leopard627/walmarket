@@ -1,6 +1,6 @@
 #!/bin/bash
-# Script to create market metadata, upload to Walrus, and create market on-chain
-# Usage: ./create_market_with_walrus.sh <market_title> <description> <category> <end_timestamp>
+# Script to create market metadata, upload to Walrus (with images), and create market on-chain
+# Usage: ./create_market_with_walrus.sh <market_title> <description> <category> <end_timestamp> [image_files...]
 
 set -e
 
@@ -12,8 +12,9 @@ NC='\033[0m' # No Color
 
 # Check arguments
 if [ "$#" -lt 4 ]; then
-    echo -e "${RED}Usage: $0 <title> <description> <category> <end_timestamp>${NC}"
+    echo -e "${RED}Usage: $0 <title> <description> <category> <end_timestamp> [image_files...]${NC}"
     echo "Example: $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000"
+    echo "Example with images: $0 \"Will BTC reach \$100k?\" \"Bitcoin price prediction\" \"Crypto\" 1735689600000 chart.png logo.jpg"
     exit 1
 fi
 
@@ -21,6 +22,8 @@ TITLE="$1"
 DESCRIPTION="$2"
 CATEGORY="$3"
 END_DATE="$4"
+shift 4
+IMAGE_FILES=("$@")
 
 # Configuration
 PACKAGE_ID="${PACKAGE_ID:-0x6e930c6b39d8a77e4e755148564207a801d0a2f550ec306fee7b9b913ed6f17d}"
@@ -29,9 +32,60 @@ MARKET_REGISTRY="${MARKET_REGISTRY:-0xec89a1e95991bb73e1e521540036d8ffc3eb5892a4
 echo -e "${YELLOW}=== Walmarket Market Creation ===${NC}"
 echo ""
 
-# Step 1: Create market metadata JSON
-echo -e "${GREEN}Step 1: Creating market metadata JSON...${NC}"
+# Step 1: Upload images to Walrus (if provided)
+IMAGE_BLOB_IDS=()
+
+if [ "${#IMAGE_FILES[@]}" -gt 0 ]; then
+    echo -e "${GREEN}Step 1: Uploading images to Walrus...${NC}"
+
+    for IMAGE_FILE in "${IMAGE_FILES[@]}"; do
+        if [ ! -f "$IMAGE_FILE" ]; then
+            echo -e "${YELLOW}Warning: Image file not found: $IMAGE_FILE (skipping)${NC}"
+            continue
+        fi
+
+        echo "Uploading: $IMAGE_FILE"
+
+        if command -v walrus &> /dev/null; then
+            # Upload image to Walrus
+            IMAGE_BLOB_ID=$(walrus store "$IMAGE_FILE" 2>&1 | grep -oE "blob_id: [a-zA-Z0-9]+" | cut -d' ' -f2 || echo "")
+
+            if [ -z "$IMAGE_BLOB_ID" ]; then
+                echo -e "${YELLOW}  Failed to upload. Using placeholder...${NC}"
+                IMAGE_BLOB_ID=$(openssl rand -hex 32)
+            else
+                echo -e "${GREEN}  Uploaded successfully!${NC}"
+            fi
+        else
+            # Generate placeholder
+            IMAGE_BLOB_ID=$(openssl rand -hex 32)
+            echo -e "${YELLOW}  Walrus CLI not found. Using placeholder blob ID${NC}"
+        fi
+
+        echo "  Blob ID: $IMAGE_BLOB_ID"
+        IMAGE_BLOB_IDS+=("$IMAGE_BLOB_ID")
+    done
+    echo ""
+fi
+
+# Step 2: Create market metadata JSON
+echo -e "${GREEN}Step 2: Creating market metadata JSON...${NC}"
 METADATA_FILE="/tmp/walmarket_metadata_$(date +%s).json"
+
+# Build images JSON array
+IMAGES_JSON="[]"
+if [ "${#IMAGE_BLOB_IDS[@]}" -gt 0 ]; then
+    IMAGES_JSON="["
+    for i in "${!IMAGE_BLOB_IDS[@]}"; do
+        BLOB_ID="${IMAGE_BLOB_IDS[$i]}"
+        IMAGE_NAME=$(basename "${IMAGE_FILES[$i]}")
+        IMAGES_JSON="$IMAGES_JSON{\"blob_id\":\"$BLOB_ID\",\"filename\":\"$IMAGE_NAME\"}"
+        if [ $i -lt $((${#IMAGE_BLOB_IDS[@]} - 1)) ]; then
+            IMAGES_JSON="$IMAGES_JSON,"
+        fi
+    done
+    IMAGES_JSON="$IMAGES_JSON]"
+fi
 
 cat > "$METADATA_FILE" <<EOF
 {
@@ -66,7 +120,7 @@ cat > "$METADATA_FILE" <<EOF
   },
   "resolution_criteria": "Market will be resolved by AI oracle using multi-source verification",
   "tags": ["prediction", "market", "$CATEGORY"],
-  "images": []
+  "images": $IMAGES_JSON
 }
 EOF
 
@@ -74,8 +128,8 @@ echo "Metadata file created: $METADATA_FILE"
 cat "$METADATA_FILE"
 echo ""
 
-# Step 2: Upload to Walrus
-echo -e "${GREEN}Step 2: Uploading metadata to Walrus...${NC}"
+# Step 3: Upload metadata to Walrus
+echo -e "${GREEN}Step 3: Uploading metadata to Walrus...${NC}"
 
 # Check if walrus CLI is available
 if command -v walrus &> /dev/null; then
@@ -110,8 +164,8 @@ fi
 
 echo ""
 
-# Step 3: Create market on-chain
-echo -e "${GREEN}Step 3: Creating market on SUI blockchain...${NC}"
+# Step 4: Create market on-chain
+echo -e "${GREEN}Step 4: Creating market on SUI blockchain...${NC}"
 
 # Convert title, description, category to hex
 TITLE_HEX=$(echo -n "$TITLE" | xxd -p | tr -d '\n')
@@ -146,7 +200,22 @@ sui client call \
 echo ""
 echo -e "${GREEN}=== Market Creation Complete ===${NC}"
 echo "Metadata file: $METADATA_FILE"
-echo "Walrus Blob ID: $BLOB_ID"
+echo "Metadata Walrus Blob ID: $BLOB_ID"
+
+if [ "${#IMAGE_BLOB_IDS[@]}" -gt 0 ]; then
+    echo ""
+    echo "Uploaded Images:"
+    for i in "${!IMAGE_BLOB_IDS[@]}"; do
+        echo "  - ${IMAGE_FILES[$i]}: ${IMAGE_BLOB_IDS[$i]}"
+    done
+fi
+
 echo ""
 echo "To fetch the metadata from Walrus (once uploaded):"
 echo "  walrus read $BLOB_ID"
+
+if [ "${#IMAGE_BLOB_IDS[@]}" -gt 0 ]; then
+    echo ""
+    echo "To fetch an image from Walrus:"
+    echo "  walrus read ${IMAGE_BLOB_IDS[0]} > image_file"
+fi
