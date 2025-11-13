@@ -21,7 +21,7 @@ export function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <a
-                  href="https://github.com/leopard627/walmarket"
+                  href="https://github.com/getwalmarket/walmarket"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-orange-600 transition-colors flex items-center gap-2"
@@ -50,7 +50,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/leopard627/walmarket/tree/main/contracts"
+                  href="https://github.com/getwalmarket/walmarket/tree/main/contracts"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-orange-600 transition-colors"
@@ -186,7 +186,7 @@ export function Footer() {
                 TESTNET
               </span>
               <a
-                href="https://github.com/leopard627/walmarket"
+                href="https://github.com/getwalmarket/walmarket"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-orange-600 transition-colors"

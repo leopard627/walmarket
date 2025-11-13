@@ -418,5 +418,5 @@ MIT License - See [LICENSE](../LICENSE) for details
 ## Support
 
 For questions or issues:
-- GitHub Issues: https://github.com/leopard627/walmarket/issues
+- GitHub Issues: https://github.com/getwalmarket/walmarket/issues
 - Project README: [../README.md](../README.md)

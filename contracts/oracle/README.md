@@ -249,7 +249,7 @@ This PoC has **NOT** been audited and contains:
 ## Contributing
 
 This is a hackathon project. For questions or suggestions:
-- GitHub: https://github.com/leopard627/walmarket
+- GitHub: https://github.com/getwalmarket/walmarket
 - LinkedIn: https://www.linkedin.com/in/jihun-kim-556a32110/
 
 ---

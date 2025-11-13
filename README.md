@@ -8,6 +8,7 @@
 
   [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://walmarket.fun)
   [![Video](https://img.shields.io/badge/Video-YouTube-red)](https://youtu.be/HqkepADJnmU)
+  [![GitHub](https://img.shields.io/badge/GitHub-getwalmarket-black)](https://github.com/getwalmarket/walmarket)
   [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 </div>
 
@@ -301,7 +302,7 @@ cd contracts/scripts
 
 ### Clone Repository
 ```bash
-git clone https://github.com/leopard627/walmarket.git
+git clone https://github.com/getwalmarket/walmarket.git
 cd walmarket
 ```
 
@@ -554,7 +555,7 @@ walmarket/
 
 - **Live Demo**: [https://walmarket.fun](https://walmarket.fun)
 - **Demo Video**: [https://youtu.be/dQw4w9WgXcQ](https://youtu.be/dQw4w9WgXcQ)
-- **GitHub**: [https://github.com/leopard627/walmarket](https://github.com/leopard627/walmarket)
+- **GitHub**: [https://github.com/getwalmarket/walmarket](https://github.com/getwalmarket/walmarket)
 - **SUI Network**: [https://sui.io](https://sui.io)
 - **Walrus**: [https://www.walrus.xyz](https://www.walrus.xyz)
 
@@ -619,7 +620,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 - **GitHub**: [@leopard627](https://github.com/leopard627)
-- **Project Link**: [https://github.com/leopard627/walmarket](https://github.com/leopard627/walmarket)
+- **Project Link**: [https://github.com/getwalmarket/walmarket](https://github.com/getwalmarket/walmarket)
 
 ---
 
