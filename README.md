@@ -10,6 +10,9 @@
   [![Video](https://img.shields.io/badge/Video-YouTube-red)](https://youtu.be/HqkepADJnmU)
   [![GitHub](https://img.shields.io/badge/GitHub-getwalmarket-black)](https://github.com/getwalmarket/walmarket)
   [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+
+  ![Visitors](https://api.visitorbadge.io/api/visitors?path=getwalmarket%2Fwalmarket&label=Visitors&countColor=%23263759&style=flat)
+  ![GitHub clones](https://img.shields.io/badge/dynamic/json?color=success&label=Clones&query=count&url=https://api.github.com/repos/getwalmarket/walmarket/traffic/clones&logo=github)
 </div>
 
 ---
