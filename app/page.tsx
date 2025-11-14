@@ -34,6 +34,14 @@ export default function Home() {
             >
               LAUNCH APP
             </Link>
+            <a
+              href="https://form.typeform.com/to/DaHuofg7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 sm:px-10 py-3 sm:py-4 bg-pink-500 text-white text-base sm:text-lg font-bold hover:bg-pink-600 transition-all border-3 sm:border-4 border-pink-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] sm:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] sm:hover:translate-x-[3px] sm:hover:translate-y-[3px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] sm:active:translate-x-[6px] sm:active:translate-y-[6px] text-center"
+            >
+              JOIN WAITLIST
+            </a>
             <Link
               href="/how-it-works"
               className="inline-block px-6 sm:px-10 py-3 sm:py-4 bg-white text-orange-600 text-base sm:text-lg font-bold hover:bg-gray-50 transition-all border-3 sm:border-4 border-orange-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] sm:hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] sm:hover:translate-x-[3px] sm:hover:translate-y-[3px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] sm:active:translate-x-[6px] sm:active:translate-y-[6px] text-center"

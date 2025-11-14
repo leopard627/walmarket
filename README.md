@@ -8,6 +8,7 @@
 
   [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://walmarket.fun)
   [![Video](https://img.shields.io/badge/Video-YouTube-red)](https://youtu.be/HqkepADJnmU)
+  [![Waitlist](https://img.shields.io/badge/Join-Waitlist-ff69b4?style=for-the-badge&logo=mailchimp&logoColor=white)](https://form.typeform.com/to/DaHuofg7)
   [![GitHub](https://img.shields.io/badge/GitHub-getwalmarket-black)](https://github.com/getwalmarket/walmarket)
   [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
