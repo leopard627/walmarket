@@ -3,15 +3,28 @@
  *
  * Provides encryption, decryption, and access control functionality
  * using Mysten Labs' Seal framework for Walrus storage.
+ *
+ * Note: This file uses type casting (any) as a temporary workaround for
+ * type compatibility issues between @mysten/seal and @mysten/sui SDKs.
  */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { SealClient } from '@mysten/seal';
 import { SuiClient } from '@mysten/sui/client';
 
 // Seal configuration types
+export interface ServerConfig {
+  objectId: string;
+  weight: number;
+  apiKeyName?: string;
+  apiKey?: string;
+}
+
 export interface SealConfig {
   suiClient: SuiClient;
-  serverConfigs: string[]; // Seal key server object IDs
+  serverConfigs: ServerConfig[]; // Seal key server configurations
   verifyKeyServers?: boolean;
 }
 
@@ -30,13 +43,16 @@ export interface DecryptOptions {
 
 /**
  * Initialize Seal client with configuration
+ *
+ * Note: Type casting required due to version mismatch between
+ * @mysten/sui and @mysten/seal SDK types
  */
 export async function initializeSealClient(config: SealConfig): Promise<SealClient> {
   const client = new SealClient({
     suiClient: config.suiClient,
     serverConfigs: config.serverConfigs,
     verifyKeyServers: config.verifyKeyServers ?? true,
-  });
+  } as any); // Type compatibility workaround for Seal SDK
 
   return client;
 }
@@ -75,9 +91,9 @@ export async function decryptOracleEvidence(
 ): Promise<Uint8Array> {
   const decryptedData = await client.decrypt({
     data: options.encryptedData,
-    sessionKey: options.sessionKey,
-    txBytes: options.txBytes,
-  });
+    sessionKey: options.sessionKey as any, // SessionKey type from Seal SDK
+    txBytes: options.txBytes as any, // Optional txBytes
+  } as any); // Type compatibility workaround
 
   return decryptedData;
 }
