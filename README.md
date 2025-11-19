@@ -640,6 +640,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🔗 Project Management
+
+This project uses **Linear** for issue tracking and project management, integrated with GitHub for seamless workflow automation.
+
+- **Linear Workspace**: [Alpsoft Team](https://linear.app/alpsoft)
+- **Issue Prefix**: `WLM-` (Walmarket)
+- **GitHub Integration**: Automatic PR linking and status updates
+
+### Workflow
+
+1. Issues are created in Linear with `WLM-` prefix
+2. Branch names include issue number (e.g., `feature/wlm-26-description`)
+3. Commits reference issue number (e.g., `(WLM-26)`)
+4. PRs automatically link to Linear issues
+5. Merging PRs updates Linear issue status to "Done"
+
+---
+
 <div align="center">
   <p>Built with ❤️ for Walrus Haulout Hackathon 2025</p>
   <p>Creating Unstoppable Truth Infrastructure</p>
