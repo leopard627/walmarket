@@ -23,18 +23,18 @@ export function Header() {
             TESTNET
           </div>
         </div>
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-4">
           <Link
             href="/how-it-works"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+            className="px-3 py-2 text-[0.6rem] font-[family-name:var(--font-press-start)] text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
           >
-            How It Works
+            HOW IT WORKS
           </Link>
           <Link
             href="/ai-oracle-validator"
-            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+            className="px-3 py-2 text-[0.6rem] font-[family-name:var(--font-press-start)] text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
           >
-            Become a Validator
+            VALIDATOR
           </Link>
         </nav>
         <div className="flex-shrink-0">
