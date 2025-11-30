@@ -110,6 +110,31 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Become a Validator CTA */}
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-700 p-8 mx-4 mb-12 border-4 border-indigo-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] text-white">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="text-6xl">🤖</div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-xl md:text-2xl font-bold mb-2">Run an AI Oracle Validator Node</h3>
+              <p className="text-sm md:text-base opacity-90 mb-4">
+                Join the decentralized network of validators powering Walmarket&apos;s truth verification system.
+                Stake Walrus tokens and earn rewards for accurate market resolutions.
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start text-xs">
+                <span className="bg-white/20 px-3 py-1 rounded-full">Rust-based CLI</span>
+                <span className="bg-white/20 px-3 py-1 rounded-full">TEE Secured</span>
+                <span className="bg-white/20 px-3 py-1 rounded-full">~500M KRW Stake</span>
+              </div>
+            </div>
+            <Link
+              href="/ai-oracle-validator"
+              className="inline-block px-8 py-4 bg-white text-purple-700 text-base font-bold hover:bg-gray-100 transition-all border-3 border-purple-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] whitespace-nowrap"
+            >
+              BECOME A VALIDATOR
+            </Link>
+          </div>
+        </div>
+
         {/* Tech Stack Highlight */}
         <div className="grid md:grid-cols-3 gap-6 mb-12 px-4">
           <div className="bg-gradient-to-br from-green-500 to-teal-600 p-6 border-4 border-green-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] text-white">

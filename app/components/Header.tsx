@@ -23,6 +23,20 @@ export function Header() {
             TESTNET
           </div>
         </div>
+        <nav className="hidden md:flex items-center gap-6">
+          <Link
+            href="/how-it-works"
+            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+          >
+            How It Works
+          </Link>
+          <Link
+            href="/ai-oracle-validator"
+            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+          >
+            Become a Validator
+          </Link>
+        </nav>
         <div className="flex-shrink-0">
           <WalletButton />
         </div>
